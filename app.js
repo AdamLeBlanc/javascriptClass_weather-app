@@ -17,7 +17,7 @@
   "use strict";
   // You will need your own api key that you can get by making an account at openweathermap.org
   // It is generally bad to include it in your source code, but for this example it's fine
-  const API_KEY = "<Your API KEY HERE>";
+  const API_KEY = "<Your api key here>";
   // This is the route of the API. This is the website we will ask for JSON from
   // To get the weather
   const BASE_URL = "https://api.openweathermap.org/data/2.5";
@@ -50,7 +50,10 @@
 
   app.updateWeather = async () => {
     // Grab the current weather from the function we made earlier
-    const weather = await app.fetchCurrentWeather();
+    app.updateCurrentWeather(await app.fetchCurrentWeather());
+  };
+
+  app.updateCurrentWeather = weather => {
     // alias the card we need to fill in
     const card = app.card;
     // basically grab each element that needs filled in and fill it with the
