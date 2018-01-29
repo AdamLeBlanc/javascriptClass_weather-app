@@ -17,7 +17,7 @@
   "use strict";
   // You will need your own api key that you can get by making an account at openweathermap.org
   // It is generally bad to include it in your source code, but for this example it's fine
-  const API_KEY = "<Put your API key here>";
+  const API_KEY = "<your key here>";
   // This is the route of the API. This is the website we will ask for JSON from
   // To get the weather
   const BASE_URL = "https://api.openweathermap.org/data/2.5";
@@ -48,5 +48,38 @@
     return await results.json();
   };
 
-  app.fetchCurrentWeather().then(results => console.log(results));
+  app.updateWeather = async () => {
+    // Grab the current weather from the function we made earlier
+    const weather = await app.fetchCurrentWeather();
+    // alias the card we need to fill in
+    const card = app.card;
+    card.querySelector(".location").textContent = weather.name;
+    card.querySelector(".date").textContent = createDate(weather.dt);
+    card.querySelector(".description").textContent =
+      weather.weather[0].description;
+    const current = card.querySelector(".current");
+    current.querySelector(".visual > .icon").classList = "icon cloudy";
+    current.querySelector(".visual > .temperature > .value ").textContent =
+      weather.main.temp;
+    current.querySelector(".description > .humidity").textContent = `${
+      weather.main.humidity
+    } %`;
+    current.querySelector(".description > .wind > .value").textContent =
+      weather.wind.speed;
+    current.querySelector(".description > .wind > .direction").textContent = `${
+      weather.wind.deg
+    }`;
+    current.querySelector(".sunrise").textContent = createDate(
+      weather.sys.sunrise
+    );
+    current.querySelector(".sunset").textContent = createDate(
+      weather.sys.sunset
+    );
+  };
+
+  function createDate(timeInSeconds) {
+    return new Date(timeInSeconds * 1000);
+  }
+
+  app.updateWeather();
 })();
