@@ -1,11 +1,11 @@
-/* 
+/*
   Author: Adam LeBlanc
   Licence: MIT
 
   This is a basic weather app to teach students a bit of javascript.
 */
 
-/* 
+/*
   The first thing we need to do is create an IIFE.
 
   This is a function that will run as soon as our script is loaded and keep
@@ -17,7 +17,7 @@
   "use strict";
   // You will need your own api key that you can get by making an account at openweathermap.org
   // It is generally bad to include it in your source code, but for this example it's fine
-  const API_KEY = "<your key here>";
+  const API_KEY = "<Your API KEY HERE>";
   // This is the route of the API. This is the website we will ask for JSON from
   // To get the weather
   const BASE_URL = "https://api.openweathermap.org/data/2.5";
@@ -53,12 +53,25 @@
     const weather = await app.fetchCurrentWeather();
     // alias the card we need to fill in
     const card = app.card;
+    // basically grab each element that needs filled in and fill it with the
+    // weather data
     card.querySelector(".location").textContent = weather.name;
-    card.querySelector(".date").textContent = createDate(weather.dt);
+    // use createDate to make the date, and pass that date to formatDate to be formated
+    card.querySelector(".date").textContent = formatDateTime(
+      createDate(weather.dt)
+    );
     card.querySelector(".description").textContent =
       weather.weather[0].description;
+
+    // Alias current to save typing
     const current = card.querySelector(".current");
-    current.querySelector(".visual > .icon").classList = "icon cloudy";
+    // we use .getIcon to find the icon we need. Just going to use the icons
+    // provided by the api
+    // .style.backgroundImage sets the icon
+    current.querySelector(
+      ".visual > .icon"
+    ).style.backgroundImage = `url(${app.getIcon(weather.weather[0].icon)})`;
+
     current.querySelector(".visual > .temperature > .value ").textContent =
       weather.main.temp;
     current.querySelector(".description > .humidity").textContent = `${
@@ -69,16 +82,44 @@
     current.querySelector(".description > .wind > .direction").textContent = `${
       weather.wind.deg
     }`;
-    current.querySelector(".sunrise").textContent = createDate(
-      weather.sys.sunrise
+    // again, we make the date with createDate, and pass that date to be formated by another function
+    current.querySelector(".sunrise").textContent = formatTime(
+      createDate(weather.sys.sunrise)
     );
-    current.querySelector(".sunset").textContent = createDate(
-      weather.sys.sunset
+    current.querySelector(".sunset").textContent = formatTime(
+      createDate(weather.sys.sunset)
     );
   };
 
+  app.getIcon = code => {
+    // build the icon url with the icon code
+    return `http://openweathermap.org/img/w/${code}.png`;
+  };
+
   function createDate(timeInSeconds) {
+    // api gives time in seconds, we need it in mili
     return new Date(timeInSeconds * 1000);
+  }
+
+  function formatDateTime(date, options = {}) {
+    // format a dateTime
+    // you can change the options by passing your own in
+    const ops = {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      ...options
+    };
+    return date.toLocaleDateString("en-US", ops);
+  }
+
+  function formatTime(date, options = {}) {
+    // format a time.
+    // you can change the options by passing your  own in
+    const ops = { hour: "2-digit", minute: "2-digit", ...options };
+    return date.toLocaleTimeString("en-US", ops);
   }
 
   app.updateWeather();
