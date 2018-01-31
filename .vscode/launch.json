@@ -1,0 +1,17 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Chrome",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:8080",
+      "webRoot": "${workspaceFolder}",
+      "runtimeExecutable":
+        "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+      "userDataDir":
+        "/Users/adam/Library/Application Support/Google/Chrome/Profile 1"
+    }
+  ],
+  "compounds": []
+}
