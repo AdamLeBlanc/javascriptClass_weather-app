@@ -15,7 +15,7 @@ You must first clone the code to your VM.
 1. Open the terminal and type the following commands
 2. `cd Workspaces`
 3. `git clone https://github.com/AdamLeBlanc/javascriptClass_weather-app.git`
-4. `cd javascriptClass_weather-app.git`
+4. `cd javascriptClass_weather-app`
 5. `code .` (this will open code, go back to the terminal)
 6. `live-server .`
 7. **Ready to go!**
